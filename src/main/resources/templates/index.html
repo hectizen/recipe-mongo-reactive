@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Recipe</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="/webjars/jquery/3.4.1/jquery.min.js"/>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"
+            th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<!--/*@thymesVar id="owner" type="com.hj.recipe.mongo.reactive.domain.Recipe"*/-->
+<div class="container-fluid" style="margin-top: 40px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h2 class="panel-title" th:text="'List of Recipes'">My recipe</h2>
+                </div>
+                <div class="col-md-1">
+                    <a class="btn btn-default" href="#" th:href="@{'/recipe/new'}" role="button">New</a>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responive" th:if="${not #lists.isEmpty(recipes)}">
+                        <table id="recipes" class="table table-hover">
+                            <thead class="thead-inverse">
+                            <th>Id</th>
+                            <th>Description</th>
+                            <th>Cook Time</th>
+                            <th>Difficulty</th>
+                            <th>Update</th>
+                            <th>Delete</th>
+                            </thead>
+                            <tbody>
+                            <tr th:each="recipe : ${recipes}">
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/show/'}"
+                                       th:text="${recipe.id}">View</a></td>
+                                <td th:text="${recipe.description}">description</td>
+                                <td th:text="${recipe.cookTime}">30</td>
+                                <td th:text="${recipe.difficulty}">Medium</td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/update/'}">Update</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/delete/'}">Delete</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
