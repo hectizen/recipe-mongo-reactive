@@ -2,6 +2,8 @@ package com.hj.recipe.mongo.reactive.controller;
 
 import com.hj.recipe.mongo.reactive.command.IngredientCommand;
 import com.hj.recipe.mongo.reactive.command.RecipeCommand;
+import com.hj.recipe.mongo.reactive.repository.RecipeRepository;
+import com.hj.recipe.mongo.reactive.repository.reactive.RecipeReactiveRepository;
 import com.hj.recipe.mongo.reactive.service.IngredientService;
 import com.hj.recipe.mongo.reactive.service.RecipeService;
 import com.hj.recipe.mongo.reactive.service.UnitOfMeasureService;
@@ -12,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import reactor.core.publisher.Mono;
 
 import java.util.HashSet;
 
@@ -27,6 +30,9 @@ public class IngredientControllerTest {
     IngredientService ingredientService;
     @Mock
     UnitOfMeasureService unitOfMeasureService;
+    @Mock
+    RecipeReactiveRepository recipeRepository;
+
 
     IngredientController ingredientController;
     MockMvc mockMvc;
@@ -57,13 +63,15 @@ public class IngredientControllerTest {
         IngredientCommand ingredientCommand = new IngredientCommand();
 
         //when
-        when(ingredientService.findByRecipeIdAndIngredientId(anyString(), anyString())).thenReturn(ingredientCommand);
+        when(ingredientService.findByRecipeIdAndIngredientId(anyString(), anyString())).thenReturn(Mono.just(ingredientCommand));
 
         //then
         mockMvc.perform(get("/recipe/1/ingredient/2/show"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/ingredient/show"))
                 .andExpect(model().attributeExists("ingredient"));
+
+       // verify(recipeRepository, times(1)).findById(anyString());
     }
 
     @Test
@@ -93,7 +101,7 @@ public class IngredientControllerTest {
         IngredientCommand ingredientCommand = new IngredientCommand();
 
         //when
-        when(ingredientService.findByRecipeIdAndIngredientId(anyString(), anyString())).thenReturn(ingredientCommand);
+        when(ingredientService.findByRecipeIdAndIngredientId(anyString(), anyString())).thenReturn(Mono.just(ingredientCommand));
         when(unitOfMeasureService.listAllUoms()).thenReturn(new HashSet<>());
 
         //then
@@ -112,7 +120,7 @@ public class IngredientControllerTest {
         command.setRecipeId("2");
 
         //when
-        when(ingredientService.saveIngredientCommand(any())).thenReturn(command);
+        when(ingredientService.saveIngredientCommand(any())).thenReturn(Mono.just(command));
 
         //then
         mockMvc.perform(post("/recipe/2/ingredient")
