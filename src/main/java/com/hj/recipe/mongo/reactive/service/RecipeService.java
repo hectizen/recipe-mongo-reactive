@@ -2,17 +2,19 @@ package com.hj.recipe.mongo.reactive.service;
 
 import com.hj.recipe.mongo.reactive.command.RecipeCommand;
 import com.hj.recipe.mongo.reactive.domain.Recipe;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Set;
 
 public interface RecipeService {
-    Set<Recipe> getRecipes();
+    Flux<Recipe> getRecipes();
 
-    Recipe findById(String l);
+    Mono<Recipe> findById(String l);
 
-    RecipeCommand findCommandById(String l);
+    Mono<RecipeCommand> findCommandById(String l);
 
-    RecipeCommand saveRecipeCommand(RecipeCommand command);
+    Mono<RecipeCommand> saveRecipeCommand(RecipeCommand command);
 
-    void deleteById(String idToDelete);
+    Mono<Void> deleteById(String idToDelete);
 }
